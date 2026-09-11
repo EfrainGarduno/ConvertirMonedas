@@ -1,0 +1,24 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Proyecto para la creación de un Challenge de Alura Latam, para convertir Monedas con Java",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EfrainGarduno/ConvertirMonedas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/EfrainGarduno/ConvertirMonedas/issues"
+  },
+  "homepage": "https://github.com/EfrainGarduno/ConvertirMonedas#readme",
+  "dependencies": {
+    "jsdom": "^29.1.1"
+  }
+}
