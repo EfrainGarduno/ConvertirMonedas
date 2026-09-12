@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
 
-const htmlPath = path.resolve(__dirname, 'nagualito_chat.html');
+const htmlPath = path.resolve(__dirname, 'public/index.html');
 const htmlContent = fs.readFileSync(htmlPath, 'utf-8');
 
 const dom = new JSDOM(htmlContent, {
@@ -12,6 +12,21 @@ const dom = new JSDOM(htmlContent, {
 
 const window = dom.window;
 const document = window.document;
+
+// Mock fetch
+window.fetch = async (url, options) => {
+    if (url === '/api/chat' && options.method === 'POST') {
+        const body = JSON.parse(options.body);
+        return {
+            ok: true,
+            json: async () => ({
+                response: `Soy Nagualito y he recibido tu mensaje: "${body.message}". ¡Estoy para ayudarte!`,
+                sessionId: body.sessionId || 'test-session-123'
+            })
+        };
+    }
+    throw new Error('Not mocked');
+};
 
 // We need to wait for DOMContentLoaded, but jsdom parses it synchronously.
 // Let's just wait a small amount of time for the script to attach listeners.

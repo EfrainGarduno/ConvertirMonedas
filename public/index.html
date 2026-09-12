@@ -104,16 +104,34 @@
                 chatHistory.scrollTop = chatHistory.scrollHeight;
             }
 
-            function handleSend() {
+            let sessionId = null;
+
+            async function handleSend() {
                 const text = userInput.value.trim();
                 if (text !== '') {
                     addMessage(text, 'user');
                     userInput.value = '';
 
-                    // Simulate Nagualito response
-                    setTimeout(() => {
-                        addMessage('Soy Nagualito y he recibido tu mensaje: "' + text + '". ¡Estoy para ayudarte!', 'nagualito');
-                    }, 500);
+                    try {
+                        const response = await fetch('/api/chat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ message: text, sessionId: sessionId }),
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+
+                        const data = await response.json();
+                        sessionId = data.sessionId;
+                        addMessage(data.response, 'nagualito');
+                    } catch (error) {
+                        console.error('Error:', error);
+                        addMessage('Lo siento, ha ocurrido un error al comunicarme con el servidor.', 'nagualito');
+                    }
                 }
             }
 
